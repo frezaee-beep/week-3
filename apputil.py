@@ -51,3 +51,78 @@ from functools import reduce
 def mean(numbers):
     total = reduce(lambda x, y: x + y, numbers)
     return total / len(numbers)
+
+# Exercise 3
+
+def load_bellevue():
+    url = "https://github.com/melaniewalsh/Intro-Cultural-Analytics/raw/master/book/data/bellevue_almshouse_modified.csv"
+    return pd.read_csv(url)
+
+
+def task_1():
+    df_bellevue = load_bellevue()
+
+    # Treat invalid gender values as missing
+    df_bellevue.loc[
+        ~df_bellevue["gender"].isin(["m", "w"]),
+        "gender"
+    ] = pd.NA
+
+    missing_counts = df_bellevue.isna().sum()
+    sorted_columns = missing_counts.sort_values().index.tolist()
+
+    return sorted_columns
+
+
+def task_2():
+    df_bellevue = load_bellevue()
+
+    df_bellevue["year"] = pd.to_datetime(
+        df_bellevue["date_in"]
+    ).dt.year
+
+    admissions = (
+        df_bellevue
+        .groupby("year")
+        .size()
+        .reset_index(name="total_admissions")
+    )
+
+    return admissions
+
+
+def task_3():
+    df_bellevue = load_bellevue()
+
+    # Treat invalid gender values as missing
+    df_bellevue.loc[
+        ~df_bellevue["gender"].isin(["m", "w"]),
+        "gender"
+    ] = pd.NA
+
+    average_age = (
+        df_bellevue
+        .groupby("gender")["age"]
+        .mean()
+    )
+
+    return average_age
+
+
+def task_4():
+    df_bellevue = load_bellevue()
+
+    # These values are marital statuses, not professions
+    messy_values = ["married", "spinster", "widow"]
+
+    professions = (
+        df_bellevue["profession"]
+        .dropna()
+        .loc[lambda x: ~x.isin(messy_values)]
+        .value_counts()
+        .head(5)
+        .index
+        .tolist()
+    )
+
+    return professions
