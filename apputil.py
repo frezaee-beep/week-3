@@ -112,13 +112,8 @@ def task_3():
 def task_4():
     df_bellevue = load_bellevue()
 
-    # These values are marital statuses, not professions
-    messy_values = ["married", "spinster", "widow"]
-
     professions = (
         df_bellevue["profession"]
-        .dropna()
-        .loc[lambda x: ~x.isin(messy_values)]
         .value_counts()
         .head(5)
         .index
