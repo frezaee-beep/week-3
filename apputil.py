@@ -1,11 +1,13 @@
 import seaborn as sns
 import pandas as pd
+from functools import reduce
 
 
 # update/add code below ...
 #Excercise 1: Write a function that takes an integer n as input and returns the nth Fibonacci number. The Fibonacci sequence is defined as follows: 
 
 def fibonacci(n):
+    """Return the nth number in the Fibonacci sequence."""
     if n == 0:
         return 0
 
@@ -14,9 +16,9 @@ def fibonacci(n):
 
     return fibonacci(n - 1) + fibonacci(n - 2)
 
-# Excercise 2: Write a function that takes a list of integers as input and returns a new list containing only the even numbers from the original list.
-
+ # Exercise 2: Convert an integer to its binary representation using recursion.
 def to_binary(n):
+    """Return the binary representation of an integer as a string."""
     if n < 2:
         return str(n)
 
@@ -24,6 +26,7 @@ def to_binary(n):
 # Excercise 3:
 
 def matching_brackets(sequence):
+    """Return True when all brackets in the sequence are correctly matched."""
     stack = []
     pairs = {
         ")": "(",
@@ -43,26 +46,30 @@ def matching_brackets(sequence):
                 return False
 
     return len(stack) == 0
-from functools import reduce
+
 
 
 # Excercise 4: 
-from functools import reduce
+
 def mean(numbers):
+    """Return the arithmetic mean of a sequence of numbers."""
     total = reduce(lambda x, y: x + y, numbers)
     return total / len(numbers)
 
 # Exercise 3
 
 def load_bellevue():
+    """Load and return the Bellevue Almshouse dataset as a DataFrame."""
     url = "https://github.com/melaniewalsh/Intro-Cultural-Analytics/raw/master/book/data/bellevue_almshouse_modified.csv"
     return pd.read_csv(url)
 
 
+
 def task_1():
+    """Return column names ordered from least to most missing values."""
     df_bellevue = load_bellevue()
 
-    # Treat invalid gender values as missing
+    # Treat invalid gender values as missing.
     df_bellevue.loc[
         ~df_bellevue["gender"].isin(["m", "w"]),
         "gender"
@@ -75,6 +82,7 @@ def task_1():
 
 
 def task_2():
+    """Return total Bellevue admissions for each year as a DataFrame."""
     df_bellevue = load_bellevue()
 
     df_bellevue["year"] = pd.to_datetime(
@@ -92,6 +100,7 @@ def task_2():
 
 
 def task_3():
+    """Return the average age for each gender as a pandas Series."""
     df_bellevue = load_bellevue()
 
     # Treat invalid gender values as missing
@@ -110,6 +119,7 @@ def task_3():
 
 
 def task_4():
+    """Return a list of the five most common professions."""
     df_bellevue = load_bellevue()
 
     professions = (
